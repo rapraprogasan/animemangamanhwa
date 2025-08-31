@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listahan Ng Anime Manga & Manhwa</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <img src="icon.png" alt="Loading">
+            <div class="spinner"></div>
+            <p>Loading your memories...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <h1><i class="fas fa-book-open"></i>Anime Manga & Manhwa</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="anime.html">Anime</a></li>
+                <li><a href="manga.html">Manga</a></li>
+                <li><a href="manhwa.html">Manhwa</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" id="global-search" placeholder="Search titles...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Never Forget Your Favorite Titles Again</h2>
+                <p>Track your anime, manga, and manhwa memories all in one place</p>
+                <div class="cta-buttons">
+                    <a href="anime.html" class="btn">Explore Anime</a>
+                    <a href="manga.html" class="btn">Explore Manga</a>
+                    <a href="manhwa.html" class="btn">Explore Manhwa</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-cards">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3>Anime Titles</h3>
+                    <div class="stat-count" id="anime-count">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Manga Titles</h3>
+                    <div class="stat-count" id="manga-count">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-globe-asia"></i>
+                    </div>
+                    <h3>Manhwa Titles</h3>
+                    <div class="stat-count" id="manhwa-count">0</div>
+                </div>
+            </div>
+        </section>
+        <!-- Simple Backup Section -->
+    <div class="simple-backup">
+        <div class="backup-card">
+            <h3><i class="fas fa-cloud-upload-alt"></i> Google Drive Backup</h3>
+            <p>I-save ang iyong data manually sa Google Drive</p>
+            
+            <div class="backup-steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <p>Click "Export Data" para ma-download ang backup file</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <p>Pumunta sa <a href="https://drive.google.com" target="_blank">Google Drive</a></p>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <p>I-upload manually ang downloaded file</p>
+                </div>
+            </div>
+
+            <div class="backup-actions">
+                <button onclick="exportData()" class="btn btn-primary">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+                <button onclick="document.getElementById('importFile').click()" class="btn btn-secondary">
+                    <i class="fas fa-upload"></i> Import Data
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+            </div>
+
+            <div class="backup-info">
+                <p><strong>Last Backup:</strong> <span id="lastBackup">Never</span></p>
+                <p><i class="fas fa-info-circle"></i> Auto-save sa localStorage habang nagwo-work ka</p>
+            </div>
+        </div>
+    </div>
+
+        <section class="about">
+            <h2>About This Website</h2>
+            <p>This website was created to help you keep track of all the anime, manga, and manhwa titles you've enjoyed. How many times have you forgotten the title of something you wanted to recommend or rewatch? This tool solves that problem by providing a personal database of your memories.</p>
+            <p>Developed by: Mark Joseph Tabugon Rogasan</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Anime Memories</h3>
+                <p>Never forget a title again. Track your anime, manga, and manhwa experiences.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="anime.html">Anime List</a></li>
+                    <li><a href="manga.html">Manga List</a></li>
+                    <li><a href="manhwa.html">Manhwa List</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>About</h3>
+                <p>This website was created by Mark Joseph Tabugon Rogasan to solve the problem of forgetting anime titles.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Listahan Ng Anime Manga & Manhwa. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="script.js"></script>
+</body>
+</html>

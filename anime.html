@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime List - Listahan Ng Anime Manga & Manhwa</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+              <img src="icon.png" alt="Loading">
+            <div class="spinner"></div>
+            <p>Loading your anime memories...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <h1><i class="fas fa-book-open"></i> Anime Memories</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="anime.html" class="active">Anime</a></li>
+                <li><a href="manga.html">Manga</a></li>
+                <li><a href="manhwa.html">Manhwa</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" id="global-search" placeholder="Search anime...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h2>My Anime List</h2>
+                <button class="btn" id="add-anime-btn"><i class="fas fa-plus"></i> Add New Anime</button>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="currently-watching">Currently Watching</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+                <button class="filter-btn" data-filter="dropped">Dropped</button>
+                <button class="filter-btn" data-filter="plan-to-watch">Plan to Watch</button>
+            </div>
+
+            <!-- Add Anime Form -->
+            <div class="modal" id="add-modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3>Add New Anime</h3>
+                    <form id="anime-form">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" id="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Image URL</label>
+                            <input type="text" id="image">
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status" required>
+                                <option value="currently-watching">Currently Watching</option>
+                                <option value="completed">Completed</option>
+                                <option value="dropped">Dropped</option>
+                                <option value="plan-to-watch">Plan to Watch</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rating">Rating (1-10)</label>
+                            <input type="number" id="rating" min="1" max="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="episodes">Episodes Watched</label>
+                            <input type="number" id="episodes">
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <textarea id="notes"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="link">Official Website Link</label>
+                            <input type="url" id="link">
+                        </div>
+                        <button type="submit" class="btn">Add Anime</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Edit Anime Modal -->
+<div class="modal" id="edit-modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Edit Anime</h3>
+        <form id="edit-form">
+            <input type="hidden" id="edit-id">
+            <div class="form-group">
+                <label for="edit-title">Title</label>
+                <input type="text" id="edit-title" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-image">Image URL</label>
+                <input type="text" id="edit-image">
+            </div>
+            <div class="form-group">
+                <label for="edit-status">Status</label>
+                <select id="edit-status" required>
+                    <option value="currently-watching">Currently Watching</option>
+                    <option value="completed">Completed</option>
+                    <option value="dropped">Dropped</option>
+                    <option value="plan-to-watch">Plan to Watch</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="edit-rating">Rating (1-10)</label>
+                <input type="number" id="edit-rating" min="1" max="10">
+            </div>
+            <div class="form-group">
+                <label for="edit-episodes">Episodes Watched</label>
+                <input type="number" id="edit-episodes">
+            </div>
+            <div class="form-group">
+                <label for="edit-notes">Notes</label>
+                <textarea id="edit-notes"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="edit-link">Official Website Link</label>
+                <input type="url" id="edit-link">
+            </div>
+            <button type="submit" class="btn">Update Anime</button>
+        </form>
+    </div>
+</div> 
+
+            <!-- Anime List -->
+            <div class="items-grid" id="anime-list">
+                <!-- Anime items will be dynamically inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Anime Memories</h3>
+                <p>Never forget a title again. Track your anime, manga, and manhwa experiences.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="anime.html">Anime List</a></li>
+                    <li><a href="manga.html">Manga List</a></li>
+                    <li><a href="manhwa.html">Manhwa List</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>About</h3>
+                <p>This website was created by Mark Joseph Tabugon Rogasan to solve the problem of forgetting anime titles.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Listahan Ng Anime Manga & Manhwa. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div class="modal" id="video-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="video-container"></div>
+        </div>
+    </div>
+
+    <script src="anime.js"></script>
+</body>
+</html>
