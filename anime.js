@@ -63,10 +63,15 @@ document.addEventListener('DOMContentLoaded', function() {
             status: document.getElementById('status').value,
             rating: document.getElementById('rating').value,
             episodes: document.getElementById('episodes').value,
+            video: document.getElementById('video').value || '',
             notes: document.getElementById('notes').value,
-            link: document.getElementById('link').value,
-            video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Example video
+            link: document.getElementById('link').value
         };
+        
+        // Convert YouTube URL to embed URL if provided
+        if (newAnime.video) {
+            newAnime.video = convertToEmbedUrl(newAnime.video);
+        }
         
         animeList.push(newAnime);
         saveAnimeList();
@@ -93,8 +98,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const status = document.getElementById('edit-status').value;
         const rating = document.getElementById('edit-rating').value;
         const episodes = document.getElementById('edit-episodes').value;
+        let video = document.getElementById('edit-video').value;
         const notes = document.getElementById('edit-notes').value;
         const link = document.getElementById('edit-link').value;
+        
+        // Convert YouTube URL to embed URL if provided
+        if (video) {
+            video = convertToEmbedUrl(video);
+        }
         
         // Find and update the anime
         const animeIndex = animeList.findIndex(anime => anime.id === id);
@@ -106,6 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 status,
                 rating,
                 episodes,
+                video,
                 notes,
                 link
             };
@@ -143,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Save anime list to localStorage
     function saveAnimeList() {
         localStorage.setItem('animeList', JSON.stringify(animeList));
-        saveDataToDrive(); // Save to Google Drive
+        saveDataToDrive();
     }
     
     // Render anime list
@@ -172,11 +184,13 @@ document.addEventListener('DOMContentLoaded', function() {
             animeCard.innerHTML = `
                 <div class="item-image">
                     <img src="${anime.image}" alt="${anime.title}">
+                    ${anime.video ? `
                     <div class="play-overlay">
                         <div class="play-btn" data-video="${anime.video}">
                             <i class="fas fa-play"></i>
                         </div>
                     </div>
+                    ` : ''}
                 </div>
                 <div class="item-details">
                     <h3 class="item-title">${anime.title}</h3>
@@ -195,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
             animeListContainer.appendChild(animeCard);
         });
         
-        // Add event listeners for play buttons
+        // Add event listeners for play buttons (click on image)
         document.querySelectorAll('.play-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const videoUrl = this.getAttribute('data-video');
@@ -231,6 +245,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const anime = animeList.find(a => a.id === id);
                 
                 if (anime) {
+                    // Convert embed URL back to watch URL for editing
+                    let videoUrl = anime.video;
+                    if (videoUrl) {
+                        videoUrl = videoUrl.replace('embed/', 'watch?v=');
+                    }
+                    
                     // Populate the edit form with anime data
                     document.getElementById('edit-id').value = anime.id;
                     document.getElementById('edit-title').value = anime.title;
@@ -238,8 +258,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('edit-status').value = anime.status;
                     document.getElementById('edit-rating').value = anime.rating || '';
                     document.getElementById('edit-episodes').value = anime.episodes || '';
+                    document.getElementById('edit-video').value = videoUrl || '';
                     document.getElementById('edit-notes').value = anime.notes || '';
                     document.getElementById('edit-link').value = anime.link || '';
+                    
+                    // Update video preview if URL exists
+                    if (videoUrl) {
+                        updateEditVideoPreview();
+                    }
                     
                     // Show the edit modal
                     editModal.style.display = 'flex';
@@ -247,6 +273,65 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+    
+    // Convert YouTube URL to embed URL
+    function convertToEmbedUrl(url) {
+        if (!url) return '';
+        
+        // Handle regular YouTube URLs
+        if (url.includes('youtube.com/watch?v=')) {
+            return url.replace('watch?v=', 'embed/');
+        }
+        
+        // Handle youtu.be short URLs
+        if (url.includes('youtu.be/')) {
+            const videoId = url.split('youtu.be/')[1];
+            return `https://www.youtube.com/embed/${videoId}`;
+        }
+        
+        // If it's already an embed URL, return as is
+        if (url.includes('youtube.com/embed/')) {
+            return url;
+        }
+        
+        return url;
+    }
+    
+    // Update video preview in add form
+    window.updateVideoPreview = function() {
+        const videoUrl = document.getElementById('video').value;
+        const previewContainer = document.getElementById('video-preview-container');
+        const previewSection = document.getElementById('video-preview');
+        
+        if (videoUrl) {
+            const embedUrl = convertToEmbedUrl(videoUrl);
+            previewContainer.innerHTML = `
+                <iframe width="100%" height="200" src="${embedUrl}" 
+                        frameborder="0" allowfullscreen></iframe>
+            `;
+            previewSection.style.display = 'block';
+        } else {
+            previewSection.style.display = 'none';
+        }
+    };
+    
+    // Update video preview in edit form
+    window.updateEditVideoPreview = function() {
+        const videoUrl = document.getElementById('edit-video').value;
+        const previewContainer = document.getElementById('edit-video-preview-container');
+        const previewSection = document.getElementById('edit-video-preview');
+        
+        if (videoUrl) {
+            const embedUrl = convertToEmbedUrl(videoUrl);
+            previewContainer.innerHTML = `
+                <iframe width="100%" height="200" src="${embedUrl}" 
+                        frameborder="0" allowfullscreen></iframe>
+            `;
+            previewSection.style.display = 'block';
+        } else {
+            previewSection.style.display = 'none';
+        }
+    };
     
     // Format status for display
     function formatStatus(status) {
@@ -259,11 +344,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function getStatusClass(status) {
         const statusMap = {
             'currently-watching': 'status-currently-watching',
-            'currently-reading': 'status-currently-reading',
             'completed': 'status-completed',
             'dropped': 'status-dropped',
-            'plan-to-watch': 'status-plan-to-watch',
-            'plan-to-read': 'status-plan-to-read'
+            'plan-to-watch': 'status-plan-to-watch'
         };
         return statusMap[status] || 'status-completed';
     }
