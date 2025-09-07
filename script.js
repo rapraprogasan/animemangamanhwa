@@ -568,8 +568,3 @@ const searchStyles = `
 const styleElement = document.createElement('style');
 styleElement.textContent = searchStyles;
 document.head.appendChild(styleElement);
-    document.getElementById('anime-count').textContent = animeList.length;
-    document.getElementById('manga-count').textContent = mangaList.length;
-    document.getElementById('manhwa-count').textContent = manhwaList.length;
-
-}
